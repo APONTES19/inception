@@ -9,7 +9,8 @@ ARG			MYSQL_USER
 ARG			MYSQL_PASSWORD
 
 #updates the package lists
-RUN			apt update
+RUN			apt-get update
+RUN			apt-get upgrade -y
 
 #install mariadb and necessary for it to work
 RUN			apt install mariadb-server mariadb-client procps -y

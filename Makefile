@@ -6,7 +6,7 @@
 #    By: lucasmar < lucasmar@student.42sp.org.br    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/12 15:13:15 by lucasmar          #+#    #+#              #
-#    Updated: 2023/12/12 17:31:51 by lucasmar         ###   ########.fr        #
+#    Updated: 2024/02/16 18:00:32 by lucasmar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ all: srcs/.env hosts crVolumes compose
 	@echo "	$(NAME) created ✓"
 	@echo "\033[0m"
 	@echo "\033[0;33m	Welcome to $(NAME) by lucasmar 42sp \033[0m"
-
+	@echo "\033[0;33m	Try "make dk" \033[0m"
 # build ********************************************************************* #
 
 srcs/.env:
@@ -49,14 +49,31 @@ update:
 	sudo apt-get install docker-compose-plugin
 
 # Docker ********************************************************************* #
+dk: dkils dkls dknet dkvl dkvlinp
 
 dkls:
 	docker ps -a
+	@echo "\n\n"
+dkils:
+	docker image ls
+	@echo "\n\n"
 dknet:
 	docker network ls
+	@echo "\n\n"
 dkvl:
 	docker volume ls
+	@echo "\n\n"
 
+dkvlinp:
+	docker volume inspect mariadb_volume
+	docker volume inspect wordpress_volume
+
+dkstop:
+	docker stop $(docker ps -qa)
+
+dkstart:
+	docker start $(docker ps -qa)
+	
 compose:
 	docker compose --file=$(COMPOSE) up --build --detach
 
@@ -83,6 +100,7 @@ fclean: clean
 		@docker volume rm mariadb_volume
 		@docker volume rm wordpress_volume
 		@echo "\033[0;31m       ▥ $(NAME) clean ✓ \033[0m"
+
 re:	fclean all
 
 .PHONY: all clean re fclean
